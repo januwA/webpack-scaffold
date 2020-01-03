@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "outDir": "./dist/",
+        "noImplicitAny": true,
+        "module": "commonjs",
+        "target": "es5",
+        "jsx": "react",
+        "allowJs": true,
+        "incremental": true,
+        "strict": true,
+        "emitDecoratorMetadata": true /* 装饰器 */,
+        "experimentalDecorators": true /* 装饰器 */,
+        "forceConsistentCasingInFileNames": true,
+        "declaration": true,
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "sourceMap": true /* .map.js */
+    },
+    "exclude": [
+        "node_modules",
+        "dist"
+    ]
+}
