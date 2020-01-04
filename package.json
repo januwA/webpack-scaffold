@@ -6,9 +6,12 @@
   "scripts": {
     "build": "webpack",
     "watch": "webpack --watch",
-    "start": "node ./dev-server.js"
+    "start": "node ./dev-server.js",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.json\""
   },
-  "keywords": ["webpack-scaffold"],
+  "keywords": [
+    "webpack-scaffold"
+  ],
   "author": "Ajanuw",
   "license": "MIT",
   "devDependencies": {
@@ -23,6 +26,7 @@
     "postcss-import": "^12.0.1",
     "postcss-loader": "^3.0.0",
     "postcss-preset-env": "^6.7.0",
+    "prettier": "^1.19.1",
     "style-loader": "^1.1.2",
     "stylus": "^0.54.7",
     "stylus-loader": "^3.0.2",
