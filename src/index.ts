@@ -1,7 +1,6 @@
-import './main.css';
-import Img from "./image.jpg";
-import data from "./data.json";
+import '~src/main.styl';
+import Img from "~assets/image.jpg";
+import data from "~assets/data.json";
 
-document.body.insertAdjacentHTML('beforeend', `<h1>webpack-scaffold</h1>`)
-document.body.insertAdjacentHTML('beforeend', `<img src=${Img} />`)
+document.querySelector('img')!.src = Img;
 console.log(data);

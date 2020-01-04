@@ -2,65 +2,116 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
+// 最小化生产
+const TerserJSPlugin = require('terser-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+
+const tsConfig = require('./tsconfig.json')
+
+function parseTsConfigPaths(tsConfig) {
+	const { paths, baseUrl } = tsConfig.compilerOptions
+	const alias = {};
+	if (paths) {
+		for (const aliasPath in paths) {
+			const key = aliasPath.replace(/\/\*$/, '')
+			const value = paths[aliasPath][0].replace(/\/\*$/, '');
+			alias[key] = path.resolve(__dirname, baseUrl, value);
+		}
+	}
+	return alias;
+}
+
 module.exports = {
-    mode: 'development',
-    entry: path.resolve(__dirname, 'src', 'index.ts'),
-    devtool: 'inline-source-map',
-    devServer: {
-        contentBase: './dist',
-        hot: true,
-    },
-    module: {
-        rules: [
-            {
-                test: /\.tsx?$/,
-                use: 'ts-loader',
-                exclude: /node_modules/,
-            },
-            {
-                test: /\.css$/,
-                use: [
-                    'style-loader',
-                    'css-loader',
-                ],
-            },
-            {
-                test: /\.(png|svg|jpg|gif)$/,
-                use: [
-                    'file-loader',
-                ],
-            },
-            {
-                test: /\.(woff|woff2|eot|ttf|otf)$/,
-                use: [
-                    'file-loader',
-                ],
-            },
-            {
-                test: /\.(csv|tsv)$/,
-                use: [
-                    'csv-loader',
-                ],
-            },
-            {
-                test: /\.xml$/,
-                use: [
-                    'xml-loader',
-                ],
-            },
-        ],
-    },
-    resolve: {
-        extensions: ['.tsx', '.ts', '.js'],
-    },
-    plugins: [
-        new CleanWebpackPlugin(),
-        new HtmlWebpackPlugin({
-            title: 'webpack-scaffold',
-        }),
-    ],
-    output: {
-        filename: 'bundle.js',
-        path: path.resolve(__dirname, 'dist'),
-    },
+	mode: 'development',
+	entry: {
+		main: path.resolve(__dirname, 'src/index.ts')
+	},
+	devtool: 'inline-source-map',
+	module: {
+		rules: [
+			{
+				test: /\.tsx?$/,
+				use: 'ts-loader',
+				exclude: /node_modules/,
+			},
+			{
+				test: /\.css$/,
+				use: [
+					'style-loader',
+					{ loader: 'css-loader', options: { importLoaders: 1 } },
+					{
+						loader: 'postcss-loader',
+						options: {
+							ident: 'postcss',
+							sourceMap: true,
+							exec: true,
+							plugins: (loader) => [
+								require('postcss-import')({ root: loader.resourcePath }),
+								require('postcss-preset-env')(),
+								require('cssnano')()
+							]
+						}
+					},
+				]
+			},
+			{
+				test: /\.styl$/,
+				use: [
+					MiniCssExtractPlugin.loader,
+					{ loader: 'css-loader', options: { importLoaders: 1 } },
+					'stylus-loader',
+				],
+			},
+			{
+				test: /\.(png|svg|jpg|gif)$/,
+				use: [
+					'file-loader',
+				],
+			},
+			{
+				test: /\.(woff|woff2|eot|ttf|otf)$/,
+				use: [
+					'file-loader',
+				],
+			},
+			{
+				test: /\.(csv|tsv)$/,
+				use: [
+					'csv-loader',
+				],
+			},
+			{
+				test: /\.xml$/,
+				use: [
+					'xml-loader',
+				],
+			},
+		],
+	},
+	resolve: {
+		extensions: ['.tsx', '.ts', '.js'],
+
+		// 如果要配置路径别名，就在/tsconfig.json里面配置
+		alias: {
+			...parseTsConfigPaths(tsConfig)
+		}
+	},
+	optimization: {
+		minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
+	},
+	plugins: [
+		new CleanWebpackPlugin(),
+		new MiniCssExtractPlugin({
+			filename: '[name]-[hash].css',
+			chunkFilename: '[id].css',
+		}),
+		new HtmlWebpackPlugin({
+			template: 'src/index.html',
+		}),
+	],
+	output: {
+		filename: '[name]-[hash].js',
+		path: path.resolve(__dirname, tsConfig.compilerOptions.outDir),
+	},
 };
