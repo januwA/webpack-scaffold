@@ -23,7 +23,7 @@ function parseTsConfigPaths(tsConfig) {
 }
 
 module.exports = {
-	mode: 'development',
+	mode: 'development', // production or development
 	entry: {
 		main: path.resolve(__dirname, 'src/index.ts')
 	},
@@ -113,5 +113,15 @@ module.exports = {
 	output: {
 		filename: '[name]-[hash].js',
 		path: path.resolve(__dirname, tsConfig.compilerOptions.outDir),
+
+		// 如果发布第三方包，可以启动下面两个配置
+		// library: "packageName",
+		// libraryTarget: 'umd',
+
+		// <img src="./x.png" />
+		// publicPath: './',
+
+		// <img src="./static/x.png" />
+		// publicPath: './static',
 	},
 };
