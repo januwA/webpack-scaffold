@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CopyFilePlugin = require('webpack-copy-file-plugin');
 
 // 最小化生产
 const TerserJSPlugin = require('terser-webpack-plugin');
@@ -109,6 +110,9 @@ module.exports = {
 		new HtmlWebpackPlugin({
 			template: 'src/index.html',
 		}),
+		new CopyFilePlugin([
+			'./README.md',
+		].map(f => path.resolve(__dirname, f)))
 	],
 	output: {
 		filename: '[name]-[hash].js',

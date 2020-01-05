@@ -1,6 +1,6 @@
 {
   "name": "webpack-scaffold",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "一个简单的webpack脚手架项目",
   "private": true,
   "scripts": {
@@ -39,6 +39,6 @@
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.10.1",
     "xml-loader": "^1.2.1",
-    "webpack-copy-file-plugin": "^0.1.4"
+    "webpack-copy-file-plugin": "^0.1.5"
   }
 }
