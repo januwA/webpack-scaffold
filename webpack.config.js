@@ -118,9 +118,10 @@ module.exports = {
 		filename: '[name]-[hash].js',
 		path: path.resolve(__dirname, tsConfig.compilerOptions.outDir),
 
-		// 如果发布第三方包，可以启动下面两个配置
+		// 如果发布第三方包，可以启动下面这三个配置
 		// library: "packageName",
 		// libraryTarget: 'umd',
+		// globalObject: "this",
 
 		// <img src="./x.png" />
 		// publicPath: './',
