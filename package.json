@@ -7,7 +7,7 @@
     "build": "webpack",
     "watch": "webpack --watch",
     "start": "node ./dev-server.js",
-    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.json\""
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\" \"src/**/*.html\" \"src/**/*.css\" \"src/**/*.json\""
   },
   "keywords": [
     "webpack-scaffold"
@@ -20,6 +20,7 @@
     "cssnano": "^4.1.10",
     "csv-loader": "^3.0.2",
     "file-loader": "^5.0.2",
+    "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
     "mini-css-extract-plugin": "^0.9.0",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
@@ -37,8 +38,8 @@
     "url-loader": "^3.0.0",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10",
+    "webpack-copy-file-plugin": "^0.1.5",
     "webpack-dev-server": "^3.10.1",
-    "xml-loader": "^1.2.1",
-    "webpack-copy-file-plugin": "^0.1.5"
+    "xml-loader": "^1.2.1"
   }
 }
