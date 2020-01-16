@@ -9,6 +9,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 
 const tsConfig = require("./tsconfig.json");
+const packageConfig = require("./package.json");
 
 function parseTsConfigPaths(tsConfig) {
   const { paths, baseUrl } = tsConfig.compilerOptions;
@@ -23,12 +24,34 @@ function parseTsConfigPaths(tsConfig) {
   return alias;
 }
 
+const webpackExternals = {
+  lodash: {
+    cdn: version =>
+      `https://cdnjs.cloudflare.com/ajax/libs/lodash.js/${version}/lodash.min.js`,
+    root: "_",
+    commonjs2: "_",
+    commonjs: "_",
+    amd: "_"
+  }
+};
+
+const htmlWebpackPluginExternals = (() => {
+  const dependencies = packageConfig.dependencies;
+  const result = [];
+  for (const libKey in webpackExternals) {
+    const version = dependencies[libKey].replace(/^\D/, "");
+    result.push(webpackExternals[libKey].cdn(version));
+  }
+  return result;
+})();
+
 module.exports = {
   mode: "development", // production or development
   entry: {
     main: path.resolve(__dirname, "src/index.ts")
   },
-  devtool: "inline-source-map",
+  externals: webpackExternals,
+  // devtool: "inline-source-map", // 生成map文件
   module: {
     rules: [
       {
@@ -82,7 +105,7 @@ module.exports = {
       },
       {
         test: /\.html$/,
-        exclude: /node_modules/,
+        exclude: [/node_modules/, path.resolve(__dirname, "index.html")],
         use: { loader: "html-loader" }
       }
     ]
@@ -105,18 +128,21 @@ module.exports = {
       chunkFilename: "[id].css"
     }),
     new HtmlWebpackPlugin({
-      template: "src/index.html"
-    }),
-    new CopyFilePlugin(["./README.md"].map(f => path.resolve(__dirname, f)))
+      inject: false,
+      title: "webpack-scaffold",
+      template: "index.html",
+      cnd: htmlWebpackPluginExternals
+    })
+    // new CopyFilePlugin(["./README.md"].map(f => path.resolve(__dirname, f)))
   ],
   output: {
     filename: "[name]-[hash].js",
-    path: path.resolve(__dirname, tsConfig.compilerOptions.outDir)
+    path: path.resolve(__dirname, tsConfig.compilerOptions.outDir),
 
     // 如果发布第三方包，可以启动下面这三个配置
     // library: "packageName",
-    // libraryTarget: 'umd',
-    // globalObject: "this",
+    libraryTarget: "umd",
+    globalObject: "this"
 
     // <img src="./x.png" />
     // publicPath: './',
