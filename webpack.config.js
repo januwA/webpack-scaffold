@@ -55,9 +55,28 @@ module.exports = {
   module: {
     rules: [
       {
+        // See also: https://github.com/microsoft/TypeScript-Babel-Starter
         test: /\.tsx?$/,
-        use: "ts-loader",
-        exclude: /node_modules/
+        exclude: /(node_modules|bower_components)/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: ["@babel/env", "@babel/typescript"],
+            plugins: [
+              "@babel/proposal-class-properties",
+              "@babel/proposal-object-rest-spread",
+              [
+                "import",
+                {
+                  libraryName: "lodash",
+                  libraryDirectory: "",
+                  camel2DashComponentName: false
+                },
+                "lodash"
+              ]
+            ]
+          }
+        }
       },
       {
         test: /\.css$/,
