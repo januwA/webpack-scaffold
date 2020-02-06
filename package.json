@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "description": "一个简单的webpack脚手架项目",
   "private": true,
+  "main": "./src/index.ts",
+  "types": "",
   "scripts": {
     "build": "webpack",
     "watch": "webpack --watch",
@@ -15,6 +17,11 @@
   ],
   "author": "Ajanuw",
   "license": "MIT",
+  "homepage": "https://github.com/januwA/webpack-scaffold",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/januwA/webpack-scaffold.git"
+  },
   "devDependencies": {
     "@babel/core": "^7.8.4",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
