@@ -56,6 +56,7 @@ module.exports = {
     rules: [
       {
         // See also: https://github.com/microsoft/TypeScript-Babel-Starter
+        // 如果你想要.d.ts文件，那么ts-loader可能来的更直接点
         test: /\.tsx?$/,
         exclude: /(node_modules|bower_components)/,
         use: {
