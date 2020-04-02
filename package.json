@@ -4,6 +4,7 @@
   "description": "一个简单的webpack脚手架项目",
   "private": true,
   "main": "./src/index.ts",
+  "module": "./src/index.ts",
   "types": "",
   "scripts": {
     "build": "webpack",
