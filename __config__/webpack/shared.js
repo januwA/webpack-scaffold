@@ -11,23 +11,24 @@ const util = require("./util");
 const tsConfig = require("../../tsconfig.json");
 const packageConfig = require("../../package.json");
 
+const isDevMode = process.env.NODE_ENV === "development";
 const externals = {
   lodash: {
-    cdn: version =>
+    cdn: (version) =>
       `https://cdnjs.cloudflare.com/ajax/libs/lodash.js/${version}/lodash.min.js`,
     root: "_",
     commonjs2: "_",
     commonjs: "_",
-    amd: "_"
-  }
+    amd: "_",
+  },
 };
 
 /**
  * 在[dev/prod.config.js]中公用的配置
  */
-const sharedConfig = {
+module.exports = {
   entry: {
-    main: util.getEntryMain()
+    main: util.getEntryMain(),
   },
   output: {
     filename: "[name]-[hash].js",
@@ -36,7 +37,7 @@ const sharedConfig = {
     // 如果发布第三方包，可以启动下面这三个配置
     // library: "packageName",
     libraryTarget: "umd",
-    globalObject: "this"
+    globalObject: "this",
 
     // <img src="./x.png" />
     // publicPath: './',
@@ -64,58 +65,53 @@ const sharedConfig = {
               {
                 libraryName: "lodash",
                 libraryDirectory: "",
-                camel2DashComponentName: false
+                camel2DashComponentName: false,
               },
-              "lodash"
-            ]
-          ]
-        }
-      }
-    },
-    {
-      test: /\.css$/,
-      use: [
-        "style-loader",
-        { loader: "css-loader", options: { importLoaders: 1 } },
-        {
-          loader: "postcss-loader",
-          options: {
-            ident: "postcss",
-            sourceMap: true,
-            exec: true,
-            plugins: loader => [
-              require("postcss-import")({ root: loader.resourcePath }),
-              require("postcss-preset-env")(),
-              require("cssnano")()
-            ]
-          }
-        }
-      ]
+              "lodash",
+            ],
+          ],
+        },
+      },
     },
     {
       test: /\.styl$/,
       use: [
-        MiniCssExtractPlugin.loader,
+        // 该插件将CSS提取到单独的文件中
+        // https://webpack.js.org/plugins/mini-css-extract-plugin/
+        isDevMode ? "style-loader" : MiniCssExtractPlugin.loader,
         { loader: "css-loader", options: { importLoaders: 1 } },
-        "stylus-loader"
-      ]
+        // {
+        //   loader: "postcss-loader",
+        //   options: {
+        //     // https://webpack.js.org/loaders/postcss-loader/
+        //     ident: "postcss",
+        //     plugins: (loader) => [
+        //       require("postcss-import")({ root: loader.resourcePath }),
+        //       require("postcss-preset-env")(),
+        //       require("cssnano")(),
+        //       require("autoprefixer")(),
+        //     ],
+        //   },
+        // },
+        { loader: "stylus-loader" },
+      ],
     },
     {
       test: /\.(png|svg|jpg|gif)$/,
-      use: ["file-loader"]
+      use: ["file-loader"],
     },
     {
       test: /\.(woff|woff2|eot|ttf|otf)$/,
-      use: ["file-loader"]
+      use: ["file-loader"],
     },
     {
       test: /\.(csv|tsv)$/,
-      use: ["csv-loader"]
+      use: ["csv-loader"],
     },
     {
       test: /\.xml$/,
-      use: ["xml-loader"]
-    }
+      use: ["xml-loader"],
+    },
     // {
     //   test: /\.html$/,
     //   exclude: [/node_modules/, path.resolve(__dirname, "index.html")],
@@ -126,30 +122,29 @@ const sharedConfig = {
   // 需要插入到打包后的html文件中的cdn
   externals: externals,
   resolve: {
+    // 导入此类文件时，不用添加后缀
     extensions: [".tsx", ".ts", ".js"],
 
     // 如果要配置路径别名，就在/tsconfig.json里面配置
     alias: {
-      ...util.parseTsConfigPaths(tsConfig)
-    }
+      ...util.parseTsConfigPaths(tsConfig),
+    },
   },
   optimization: {
-    minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})]
+    minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
   },
   plugins: [
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
       filename: "[name]-[hash].css",
-      chunkFilename: "[id].css"
+      chunkFilename: "[id].css",
     }),
     new HtmlWebpackPlugin({
       inject: false,
       title: "webpack-scaffold",
       template: util.getHtmlTemplatePath(),
-      cnd: util.externals2Cdn(externals, packageConfig.dependencies)
-    })
+      cnd: util.externals2Cdn(externals, packageConfig.dependencies),
+    }),
     // new CopyFilePlugin(["./README.md"].map(f => path.resolve(__dirname, f)))
-  ]
+  ],
 };
-
-module.exports = sharedConfig;
