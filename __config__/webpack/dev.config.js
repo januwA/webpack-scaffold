@@ -1,6 +1,6 @@
-const shared = require("./shared");
-
 process.env.NODE_ENV = "development";
+
+const shared = require("./shared");
 
 module.exports = {
   mode: process.env.NODE_ENV,

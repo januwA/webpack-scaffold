@@ -1,11 +1,7 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const CopyFilePlugin = require("webpack-copy-file-plugin");
 
-// 最小化生产
-const TerserJSPlugin = require("terser-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 
 const util = require("./util");
 const tsConfig = require("../../tsconfig.json");
@@ -130,21 +126,14 @@ module.exports = {
       ...util.parseTsConfigPaths(tsConfig),
     },
   },
-  optimization: {
-    minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
-  },
+  optimization: {},
   plugins: [
     new CleanWebpackPlugin(),
-    new MiniCssExtractPlugin({
-      filename: "[name]-[hash].css",
-      chunkFilename: "[id].css",
-    }),
     new HtmlWebpackPlugin({
       inject: false,
       title: "webpack-scaffold",
       template: util.getHtmlTemplatePath(),
       cnd: util.externals2Cdn(externals, packageConfig.dependencies),
     }),
-    // new CopyFilePlugin(["./README.md"].map(f => path.resolve(__dirname, f)))
   ],
 };
