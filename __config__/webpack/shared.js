@@ -53,6 +53,7 @@ module.exports = {
         options: {
           presets: ["@babel/env", "@babel/typescript"],
           plugins: [
+            "@babel/plugin-transform-runtime",
             ["@babel/plugin-proposal-decorators", { legacy: true }],
             ["@babel/plugin-proposal-class-properties", { loose: true }],
             "@babel/proposal-object-rest-spread",
