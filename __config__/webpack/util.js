@@ -79,8 +79,10 @@ class Util {
   externals2Cdn(externals, dependencies) {
     const result = [];
     for (const libKey in externals) {
-      const version = dependencies[libKey].replace(/^\D/, "");
-      result.push(externals[libKey].cdn(version));
+      if (libKey in dependencies) {
+        const version = dependencies[libKey].replace(/^\D/, "");
+        result.push(externals[libKey].cdn(version));
+      }
     }
     return result;
   }
