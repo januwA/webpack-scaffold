@@ -14,4 +14,5 @@ module.exports = {
   optimization: shared.optimization,
   plugins: shared.plugins,
   output: shared.output,
+  experiments: shared.experiments,
 };

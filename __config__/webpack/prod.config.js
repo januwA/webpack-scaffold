@@ -20,6 +20,10 @@ module.exports = {
   optimization: {
     // 压缩js,css文件
     minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
+    // 删除空的块
+    removeEmptyChunks: true,
+    // 合并包含相同模块的块
+    mergeDuplicateChunks: true,
   },
   plugins: [
     ...shared.plugins,
@@ -30,4 +34,5 @@ module.exports = {
     // new CopyFilePlugin(["./README.md"].map(f => path.resolve(__dirname, f)))
   ],
   output: shared.output,
+  experiments: shared.experiments,
 };

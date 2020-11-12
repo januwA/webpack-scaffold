@@ -14,3 +14,5 @@ function each(arr?: []) {
 }
 
 each();
+
+console.log( await Promise.resolve('top await') );

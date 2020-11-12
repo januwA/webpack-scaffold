@@ -36,7 +36,7 @@ module.exports = {
     globalObject: "this",
 
     // <img src="./x.png" />
-    // publicPath: './',
+    publicPath: './',
 
     // <img src="./static/x.png" />
     // publicPath: './static',
@@ -119,7 +119,7 @@ module.exports = {
   // 需要插入到打包后的html文件中的cdn
   externals: externals,
   resolve: {
-    // 导入此类文件时，不用添加后缀
+    // 导入此类文件时，不用添加文件后缀
     extensions: [".tsx", ".ts", ".js"],
 
     // 如果要配置路径别名，就在/tsconfig.json里面配置
@@ -127,7 +127,11 @@ module.exports = {
       ...util.parseTsConfigPaths(tsConfig),
     },
   },
+
+  // 优化: https://webpack.js.org/configuration/optimization/
   optimization: {},
+
+  // 插件: https://webpack.js.org/configuration/plugins/#plugins
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
@@ -137,4 +141,9 @@ module.exports = {
       cnd: util.externals2Cdn(externals, packageConfig.dependencies),
     }),
   ],
+
+  // 实验性支持: https://webpack.js.org/configuration/experiments/
+  experiments: {
+    topLevelAwait: true,
+  },
 };

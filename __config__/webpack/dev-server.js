@@ -14,7 +14,7 @@ const options = {
   openPage: "",
   host: "localhost",
   open: true, // 默认打开浏览器
-  port: 5000,
+  port: 5000, // 默认打开的端口
   writeToDisk: true,
   compress: true,
   overlay: {

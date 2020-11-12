@@ -1,4 +1,4 @@
-一个简单的webpack脚手架项目
+## 一个简单的webpack脚手架项目
 
 ## dev
 > $ npm start
