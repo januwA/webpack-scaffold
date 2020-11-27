@@ -4,9 +4,8 @@ const webpack = require("webpack");
 const util = require("./util");
 
 const config = require("./dev.config");
-const tsConfig = require("../../tsconfig.json");
 
-const contentBase = util.getOutputPath(tsConfig);
+const contentBase = util.getOutputPath();
 // https://webpack.js.org/configuration/dev-server
 const options = {
   contentBase,
@@ -19,7 +18,7 @@ const options = {
   compress: true,
   overlay: {
     // warnings: true,
-    errors: true
+    errors: true,
   },
 
   // 现在有个/api/users的请求会将请求代理到http://localhost:3000/api/users
@@ -29,14 +28,14 @@ const options = {
 
   after(app, server, compiler) {
     // 拦截路由
-    // 
+    //
     // See also:
     // https://gkedge.gitbooks.io/react-router-in-the-real/content/node_express.html
     // https://expressjs.com/zh-cn/4x/api.html#req
     app.get("*", (req, res, next) => {
       res.sendFile(path.join(contentBase, "index.html"));
     });
-  }
+  },
 };
 
 webpackDevServer.addDevServerEntrypoints(config, options);

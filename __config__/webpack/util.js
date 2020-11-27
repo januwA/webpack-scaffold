@@ -1,6 +1,28 @@
 const path = require("path");
+const fs = require("fs");
 
 class Util {
+  static tsconfig;
+  /**
+   * 读取 tsconfig.json的配置
+   */
+  getTsConfig() {
+    if (Util.tsconfig) return Util.tsconfig;
+
+    const tsConfig = fs.readFileSync(
+      path.resolve(__dirname, "../../", "tsconfig.json"),
+      {
+        encoding: "utf-8",
+      }
+    );
+
+    // 去掉注释
+    Util.tsconfig = JSON.parse(
+      tsConfig.replace(/\/\/[^]*?\n/g, "").replace(/[^"]\/\*[^"][^]*?\*\//g, "")
+    );
+    return Util.tsconfig;
+  }
+
   /**
    * 返回项目根目录
    */
@@ -15,7 +37,8 @@ class Util {
     return path.resolve(this.getRootPath(), "src/index.ts");
   }
 
-  getOutputPath(tsConfig) {
+  getOutputPath() {
+    const tsConfig = this.getTsConfig();
     const out = tsConfig ? tsConfig.compilerOptions.outDir : "dist";
     return path.resolve(this.getRootPath(), out);
   }
@@ -56,7 +79,8 @@ class Util {
    *
    * @param {} tsConfig
    */
-  parseTsConfigPaths(tsConfig) {
+  parseTsConfigPaths() {
+    const tsConfig = this.getTsConfig();
     const { paths, baseUrl } = tsConfig.compilerOptions;
     const alias = {};
     if (paths) {

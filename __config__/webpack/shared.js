@@ -4,7 +4,6 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const util = require("./util");
-const tsConfig = require("../../tsconfig.json");
 const packageConfig = require("../../package.json");
 
 const isDevMode = process.env.NODE_ENV === "development";
@@ -28,7 +27,7 @@ module.exports = {
   },
   output: {
     filename: "[name]-[hash].js",
-    path: util.getOutputPath(tsConfig),
+    path: util.getOutputPath(),
 
     // 如果发布第三方包，可以启动下面这三个配置
     // library: "packageName",
@@ -124,7 +123,7 @@ module.exports = {
 
     // 如果要配置路径别名，就在/tsconfig.json里面配置
     alias: {
-      ...util.parseTsConfigPaths(tsConfig),
+      ...util.parseTsConfigPaths(),
     },
   },
 
