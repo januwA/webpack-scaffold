@@ -1,7 +1,10 @@
+const path = require("path");
+
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CopyFilePlugin = require("webpack-copy-file-plugin");
 
 const util = require("./util");
 const packageConfig = require("../../package.json");
@@ -26,7 +29,7 @@ module.exports = {
     main: util.getEntryMain(),
   },
   output: {
-    filename: "[name]-[hash].js",
+    filename: "js/[name].[contenthash:8].js",
     path: util.getOutputPath(),
 
     // 如果发布第三方包，可以启动下面这三个配置
@@ -35,10 +38,10 @@ module.exports = {
     globalObject: "this",
 
     // <img src="./x.png" />
-    publicPath: './',
+    // publicPath: "./",
 
-    // <img src="./static/x.png" />
-    // publicPath: './static',
+    // <img src="/static/x.png" />
+    // publicPath: '/static/',
   },
 
   rules: [
@@ -76,29 +79,57 @@ module.exports = {
         // https://webpack.js.org/plugins/mini-css-extract-plugin/
         isDevMode ? "style-loader" : MiniCssExtractPlugin.loader,
         { loader: "css-loader", options: { importLoaders: 1 } },
-        // {
-        //   loader: "postcss-loader",
-        //   options: {
-        //     // https://webpack.js.org/loaders/postcss-loader/
-        //     ident: "postcss",
-        //     plugins: (loader) => [
-        //       require("postcss-import")({ root: loader.resourcePath }),
-        //       require("postcss-preset-env")(),
-        //       require("cssnano")(),
-        //       require("autoprefixer")(),
-        //     ],
-        //   },
-        // },
-        { loader: "stylus-loader" },
+        {
+          // https://webpack.js.org/loaders/postcss-loader/
+          loader: "postcss-loader",
+          options: {
+            postcssOptions: {
+              plugins: [
+                ["postcss-short", {}], // CSS中使用高级速记属性
+                [
+                  "postcss-preset-env",
+                  {}, // 将现代CSS转换为大多数浏览器可以理解的内容
+                ],
+              ],
+            },
+          },
+        },
+        {
+          // https://www.npmjs.com/package/stylus-loader
+          loader: "stylus-loader",
+          options: {
+            stylusOptions: {
+              // 导入styl全局配置
+              import: [path.join(__dirname, "../../stylus.styl")],
+            },
+          },
+        },
       ],
     },
     {
       test: /\.(png|svg|jpg|gif)$/,
-      use: ["file-loader"],
+      use: [
+        {
+          // https://webpack.js.org/loaders/file-loader/
+          loader: "file-loader",
+          options: {
+            outputPath: "images",
+            name: "[name].[ext]",
+          },
+        },
+      ],
     },
     {
       test: /\.(woff|woff2|eot|ttf|otf)$/,
-      use: ["file-loader"],
+      use: [
+        {
+          loader: "file-loader",
+          options: {
+            outputPath: "fonts",
+            name: "[name].[ext]",
+          },
+        },
+      ],
     },
     {
       test: /\.(csv|tsv)$/,
@@ -139,6 +170,13 @@ module.exports = {
       template: util.getHtmlTemplatePath(),
       cnd: util.externals2Cdn(externals, packageConfig.dependencies),
     }),
+
+    // 将 /public 拷贝到打包后的文件夹下
+    new CopyFilePlugin(
+      ["./public/"].map((fpath) => {
+        return path.resolve(__dirname, "../../", fpath);
+      })
+    ),
   ],
 
   // 实验性支持: https://webpack.js.org/configuration/experiments/

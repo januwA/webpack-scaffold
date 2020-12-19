@@ -3,6 +3,7 @@ const fs = require("fs");
 
 class Util {
   static tsconfig;
+
   /**
    * 读取 tsconfig.json的配置
    */

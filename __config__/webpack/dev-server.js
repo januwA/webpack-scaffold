@@ -3,7 +3,7 @@ const webpackDevServer = require("webpack-dev-server");
 const webpack = require("webpack");
 const util = require("./util");
 
-const config = require("./dev.config");
+const devConfig = require("./dev.config");
 
 const contentBase = util.getOutputPath();
 // https://webpack.js.org/configuration/dev-server
@@ -33,13 +33,19 @@ const options = {
     // https://gkedge.gitbooks.io/react-router-in-the-real/content/node_express.html
     // https://expressjs.com/zh-cn/4x/api.html#req
     app.get("*", (req, res, next) => {
-      res.sendFile(path.join(contentBase, "index.html"));
+      const fileExt = path.extname(req.path);
+      if (!fileExt) {
+        // 没有文件扩展名的任何路由（例如 /devices）
+        res.sendFile(path.join(contentBase, "index.html"));
+      } else {
+        next();
+      }
     });
   },
 };
 
-webpackDevServer.addDevServerEntrypoints(config, options);
-const compiler = webpack(config);
+webpackDevServer.addDevServerEntrypoints(devConfig, options);
+const compiler = webpack(devConfig);
 const server = new webpackDevServer(compiler, options);
 
 server.listen(options.port, options.host, () => {

@@ -28,7 +28,7 @@ module.exports = {
   plugins: [
     ...shared.plugins,
     new MiniCssExtractPlugin({
-      filename: "[name]-[hash].css",
+      filename: "[name].[contenthash:8].css",
       chunkFilename: "[id].css",
     }),
     // new CopyFilePlugin(["./README.md"].map(f => path.resolve(__dirname, f)))
