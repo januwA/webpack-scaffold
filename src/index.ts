@@ -9,3 +9,7 @@ console.log(jsonData);
 console.log(_.toUpper("ajanuw"));
 
 console.log(await Promise.resolve("top await"));
+
+let a;
+a ??= "asd";
+console.log(a);

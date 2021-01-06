@@ -38,7 +38,7 @@ module.exports = {
     globalObject: "this",
 
     // <img src="./x.png" />
-    // publicPath: "./",
+    publicPath: "",
 
     // <img src="/static/x.png" />
     // publicPath: '/static/',
@@ -50,27 +50,32 @@ module.exports = {
       // 如果你想要.d.ts文件，那么ts-loader可能来的更直接点
       test: /\.tsx?$/,
       exclude: /(node_modules|bower_components)/,
-      use: {
-        loader: "babel-loader",
-        options: {
-          presets: ["@babel/env", "@babel/typescript"],
-          plugins: [
-            "@babel/plugin-transform-runtime",
-            ["@babel/plugin-proposal-decorators", { legacy: true }],
-            ["@babel/plugin-proposal-class-properties", { loose: true }],
-            "@babel/proposal-object-rest-spread",
-            [
-              "import",
-              {
-                libraryName: "lodash",
-                libraryDirectory: "",
-                camel2DashComponentName: false,
-              },
-              "lodash",
+      use: [
+        {
+          loader: "babel-loader",
+          options: {
+            presets: ["@babel/env", "@babel/typescript"],
+            plugins: [
+              "@babel/plugin-transform-runtime",
+              ["@babel/plugin-proposal-decorators", { legacy: true }],
+              ["@babel/plugin-proposal-class-properties", { loose: true }],
+              "@babel/proposal-object-rest-spread",
+              [
+                "import",
+                {
+                  libraryName: "lodash",
+                  libraryDirectory: "",
+                  camel2DashComponentName: false,
+                },
+                "lodash",
+              ],
             ],
-          ],
+          },
         },
-      },
+        {
+          loader: "ts-loader",
+        },
+      ],
     },
     {
       test: /\.styl$/,
