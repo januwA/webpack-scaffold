@@ -3,6 +3,7 @@ process.env.NODE_ENV = "development";
 const shared = require("./shared");
 
 module.exports = {
+  // target: 'node' // 如果你只想打包在nodejs环境中运行的代码，就开启这个
   mode: process.env.NODE_ENV,
   entry: shared.entry,
   externals: shared.externals,
