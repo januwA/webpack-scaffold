@@ -10,6 +10,9 @@ const util = require("./util");
 const packageConfig = require("../../package.json");
 
 const isDevMode = process.env.NODE_ENV === "development";
+
+// 外部依赖，不会创建捆绑包
+// https://webpack.js.org/configuration/externals/
 const externals = {
   lodash: {
     cdn: (version) =>
@@ -26,11 +29,11 @@ const externals = {
  */
 module.exports = {
   entry: {
-    main: util.getEntryMain(),
+    main: util.entry(),
   },
   output: {
     filename: "js/[name].[contenthash:8].js",
-    path: util.getOutputPath(),
+    path: util.output(),
 
     // 如果发布第三方包，可以启动下面这三个配置
     // library: "packageName",
@@ -74,6 +77,14 @@ module.exports = {
         },
         {
           loader: "ts-loader",
+          options: {
+            configFile: path.join(
+              util.rootPath(),
+              process.env.NODE_ENV === "production"
+                ? "tsconfig.build.json"
+                : "tsconfig.json"
+            ),
+          },
         },
       ],
     },
@@ -159,7 +170,7 @@ module.exports = {
 
     // 如果要配置路径别名，就在/tsconfig.json里面配置
     alias: {
-      ...util.parseTsConfigPaths(),
+      ...util.alias(),
     },
   },
 
@@ -172,7 +183,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       inject: false,
       title: "webpack-scaffold",
-      template: util.getHtmlTemplatePath(),
+      template: util.htmlTemplatePath(),
       cnd: util.externals2Cdn(externals, packageConfig.dependencies),
     }),
 

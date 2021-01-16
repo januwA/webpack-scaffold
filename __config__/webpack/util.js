@@ -1,54 +1,47 @@
 const path = require("path");
 const fs = require("fs");
+const JSON5 = require("json5");
 
 class Util {
-  static tsconfig;
-
   /**
    * 读取 tsconfig.json的配置
    */
-  getTsConfig() {
-    if (Util.tsconfig) return Util.tsconfig;
-
-    const tsConfig = fs.readFileSync(
-      path.resolve(__dirname, "../../", "tsconfig.json"),
-      {
+  tsconfig() {
+    return JSON5.parse(
+      fs.readFileSync(path.resolve(__dirname, "../../", "tsconfig.json"), {
         encoding: "utf-8",
-      }
+      })
     );
-
-    // 去掉注释
-    Util.tsconfig = JSON.parse(
-      tsConfig.replace(/\/\/[^]*?\n/g, "").replace(/[^"]\/\*[^"][^]*?\*\//g, "")
-    );
-    return Util.tsconfig;
   }
 
   /**
    * 返回项目根目录
    */
-  getRootPath() {
+  rootPath() {
     return path.resolve(__dirname, "../../");
   }
 
   /**
    * 返回打包入口文件路径
    */
-  getEntryMain() {
-    return path.resolve(this.getRootPath(), "src/index.ts");
+  entry() {
+    return path.resolve(this.rootPath(), "src", "index.ts");
   }
 
-  getOutputPath() {
-    const tsConfig = this.getTsConfig();
+  /**
+   * 打包输出目录
+   */
+  output() {
+    const tsConfig = this.tsconfig();
     const out = tsConfig ? tsConfig.compilerOptions.outDir : "dist";
-    return path.resolve(this.getRootPath(), out);
+    return path.resolve(this.rootPath(), out);
   }
 
   /**
    * 返回[HtmlWebpackPlugin]插件的[template]配置路径
    */
-  getHtmlTemplatePath() {
-    return path.resolve(this.getRootPath(), "index.html");
+  htmlTemplatePath() {
+    return path.resolve(this.rootPath(), "index.html");
   }
 
   /**
@@ -77,15 +70,13 @@ class Util {
    *   "~assets": "./src/assets",
    * }
    * ```
-   *
-   * @param {} tsConfig
    */
-  parseTsConfigPaths() {
-    const tsConfig = this.getTsConfig();
+  alias() {
+    const tsConfig = this.tsconfig();
     const { paths, baseUrl } = tsConfig.compilerOptions;
     const alias = {};
     if (paths) {
-      const rootPath = this.getRootPath();
+      const rootPath = this.rootPath();
       const exp = /\/\*$/;
       for (const aliasPath in paths) {
         const key = aliasPath.replace(exp, "");

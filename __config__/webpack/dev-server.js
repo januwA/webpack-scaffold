@@ -5,7 +5,7 @@ const util = require("./util");
 
 const devConfig = require("./dev.config");
 
-const contentBase = util.getOutputPath();
+const contentBase = util.output();
 // https://webpack.js.org/configuration/dev-server
 const options = {
   contentBase,

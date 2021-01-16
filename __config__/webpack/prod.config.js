@@ -9,10 +9,9 @@ const CopyFilePlugin = require("webpack-copy-file-plugin");
 
 const shared = require("./shared");
 
-module.exports = {
+const prodConfig = {
   // target: 'node' // 如果你只想打包在nodejs环境中运行的代码，就开启这个
   mode: process.env.NODE_ENV,
-  entry: shared.entry,
   externals: shared.externals,
   module: {
     rules: shared.rules,
@@ -34,6 +33,13 @@ module.exports = {
     }),
     // new CopyFilePlugin(["./README.md"].map(f => path.resolve(__dirname, f)))
   ],
-  output: shared.output,
   experiments: shared.experiments,
 };
+
+module.exports = [
+  {
+    entry: shared.entry,
+    output: shared.output,
+    ...prodConfig,
+  },
+];
