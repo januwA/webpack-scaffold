@@ -13,10 +13,25 @@
     <% } %>
   </head>
 
-  <body>
+  <body class="position-relative">
     <h1>webpack-scaffold</h1>
-    <img id="js-img" />
-    <img src="./public/i.jpg" alt="">
+    <div class="d-flex justify-content-around mt-5">
+      <img id="js-img" />
+      <img src="./public/i.jpg" alt="" />
+    </div>
+    <div class="toast position-absolute top-1 end-1" data-bs-autohide="true">
+      <div class="toast-header">
+        <strong class="me-auto">Bootstrap</strong>
+        <small>11 mins ago</small>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="toast"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="toast-body text-primary">Hello, world! This is a toast message.</div>
+    </div>
     <!-- See also:  https://github.com/jaketrent/html-webpack-template/blob/86f285d5c790a6c15263f5cc50fd666d51f974fd/index.html -->
 
     <!-- cnd -->

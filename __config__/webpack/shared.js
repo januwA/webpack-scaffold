@@ -123,6 +123,39 @@ module.exports = {
       ],
     },
     {
+      test: /\.s[ac]ss$/i,
+      use: [
+        isDevMode ? "style-loader" : MiniCssExtractPlugin.loader,
+        { loader: "css-loader", options: { importLoaders: 1 } },
+        {
+          // https://webpack.js.org/loaders/postcss-loader/
+          loader: "postcss-loader",
+          options: {
+            postcssOptions: {
+              plugins: [
+                ["postcss-short", {}], // CSS中使用高级速记属性
+                [
+                  "postcss-preset-env",
+                  {}, // 将现代CSS转换为大多数浏览器可以理解的内容
+                ],
+              ],
+            },
+          },
+        },
+        {
+          // https://webpack.js.org/loaders/sass-loader/
+          loader: "sass-loader",
+          options: {
+            // 全局配置
+            additionalData: '@import "stylus.scss";',
+            sassOptions: {
+              includePaths: [path.resolve(__dirname, "../../")],
+            },
+          },
+        },
+      ],
+    },
+    {
       test: /\.(png|svg|jpg|gif)$/,
       use: [
         {

@@ -1,13 +1,9 @@
 body
-	padding: 0px;
-	display: grid;
-	grid-template-areas: '. title' 'img img';
-	grid-template-columns: repeat(2, 1fr);
 	background: url('./assets/image.jpg');
-	justify-items: center;
 
 h1
-	grid-column: span 2 / auto;
+	padding: 12px;
+	text-align: center;
 	color: primary-color;
 	background-color: black;
 	color1 = rgba(10, 100, 100, 0.5);
@@ -16,12 +12,6 @@ h1
 	background: repeating-linear-gradient(45deg, color1, color1 (size / 2), color2 (size / 2), color2 size);
 	animation: gradient 20s linear infinite;
 	background-size: 200%;
-	font-size: 40pt;
-
-img
-	size: 200pt;
-	border-radius: 50%;
-	animation: anime 6s linear infinite alternate;
 
 @keyframes gradient
 	0%

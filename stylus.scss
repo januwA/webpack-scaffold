@@ -1,0 +1,30 @@
+@use "sass:map";
+
+// 自定义全局变量
+$round: 50%;
+
+// 定制Bootstrap的变量
+// https://getbootstrap.com/docs/5.0/customize/overview/
+$primary: orange;
+
+
+// Required
+@import "./node_modules/bootstrap/scss/functions";
+@import "./node_modules/bootstrap/scss/variables";
+@import "./node_modules/bootstrap/scss/mixins";
+
+$c-position-values: (
+  1: 10%,
+);
+
+// 修改Map
+$position-values: map-merge($position-values, $c-position-values);
+
+// Optional
+@import "./node_modules/bootstrap/scss/root";
+@import "./node_modules/bootstrap/scss/reboot";
+@import "./node_modules/bootstrap/scss/type";
+@import "./node_modules/bootstrap/scss/images";
+@import "./node_modules/bootstrap/scss/containers";
+@import "./node_modules/bootstrap/scss/grid";
+
