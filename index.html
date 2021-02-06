@@ -8,7 +8,14 @@
     <!-- 如果使用了html-loader这里可能会无效 -->
     <title><%= htmlWebpackPlugin.options.title %></title>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+    />
     <% for (var css in htmlWebpackPlugin.files.css) { %>
     <link href="<%= htmlWebpackPlugin.files.css[css] %>" rel="stylesheet" />
     <% } %>
@@ -20,7 +27,10 @@
       <img id="js-img" />
       <img src="./public/i.jpg" alt="" />
     </div>
-    <div class="toast position-absolute top-1 end-1 show" data-bs-autohide="true">
+    <div
+      class="toast position-absolute top-1 end-1 show"
+      data-bs-autohide="true"
+    >
       <div class="toast-header">
         <strong class="me-auto">Bootstrap</strong>
         <small>11 mins ago</small>
@@ -32,7 +42,8 @@
         ></button>
       </div>
       <div class="toast-body text-primary">
-        <i class="bi-alarm" style="font-size: 2rem; color: cornflowerblue;"></i>
+        <!-- <i class="bi-alarm" style="font-size: 2rem; color: cornflowerblue"></i> -->
+        <i class="fa fa-acorn"></i>
         Hello, world! This is a toast message.
       </div>
     </div>
