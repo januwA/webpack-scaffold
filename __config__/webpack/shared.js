@@ -4,6 +4,8 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+
 const CopyFilePlugin = require("webpack-copy-file-plugin");
 
 const util = require("./util");
@@ -62,6 +64,7 @@ module.exports = {
               "@babel/plugin-transform-runtime",
               ["@babel/plugin-proposal-decorators", { legacy: true }],
               ["@babel/plugin-proposal-class-properties", { loose: true }],
+              ["@babel/plugin-proposal-private-methods", { loose: true }],
               "@babel/proposal-object-rest-spread",
               [
                 "import",
@@ -208,7 +211,11 @@ module.exports = {
   },
 
   // 优化: https://webpack.js.org/configuration/optimization/
-  optimization: {},
+  optimization: {
+    minimizer: [
+      new CssMinimizerPlugin(), // 仅在生产模式下启用 CSS 优化
+    ]
+  },
 
   // 插件: https://webpack.js.org/configuration/plugins/#plugins
   plugins: [
