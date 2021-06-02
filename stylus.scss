@@ -1,18 +1,1 @@
-// Global variable
-$round: 50%;
 
-// https://getbootstrap.com/docs/5.0/customize/overview/
-$primary: orange;
-
-// Required
-@import "~bootstrap/scss/functions";
-@import "~bootstrap/scss/variables";
-@import "~bootstrap/scss/mixins";
-
-$c-position-values: (
-  1: 10%,
-);
-
-$position-values: map-merge($position-values, $c-position-values);
-
-@import "~bootstrap/scss/bootstrap";

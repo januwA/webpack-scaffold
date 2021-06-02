@@ -1,18 +1,22 @@
-## 一个简单的webpack脚手架项目
+## Simple webpack scaffold
 
 ## dev
-> $ npm start
+```sh
+$ npm start
+```
 
 ## build
-> $ npm run build
+```sh
+$ npm run build
+```
 
 
-## 生成 jest config
+## init jest config
 ```sh
 $ ./node_modules/.bin/jest --init
 ```
 
-## 生成 tsconfig
+## init tsconfig
 ```sh
 $ ./node_modules/.bin/tsc --init
 ```

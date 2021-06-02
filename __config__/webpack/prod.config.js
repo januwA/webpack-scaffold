@@ -2,7 +2,6 @@ process.env.NODE_ENV = "production";
 
 // 最小化生产
 const TerserJSPlugin = require("terser-webpack-plugin");
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const CopyFilePlugin = require("webpack-copy-file-plugin");
@@ -19,7 +18,7 @@ const prodConfig = {
   resolve: shared.resolve,
   optimization: {
     // 压缩js,css文件
-    minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
+    minimizer: [new TerserJSPlugin({})],
     // 删除空的块
     removeEmptyChunks: true,
     // 合并包含相同模块的块
