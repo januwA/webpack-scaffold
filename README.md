@@ -2,18 +2,12 @@
 
 ## dev
 ```sh
-$ npm start
+$ npm run start:dev
 ```
 
 ## build
 ```sh
-$ npm run build
-```
-
-
-## init jest config
-```sh
-$ ./node_modules/.bin/jest --init
+$ npm run build:prod
 ```
 
 ## init tsconfig
@@ -25,5 +19,4 @@ $ ./node_modules/.bin/tsc --init
 ## See also:
 - https://webpack.js.org/
 - https://www.webpackjs.com/
-- [jest cli](https://jestjs.io/docs/en/cli)
-- [jest docs](https://jestjs.io/docs/en/getting-started)
+- [优化 webpack 构建速度](https://github.com/stephencookdev/speed-measure-webpack-plugin)
