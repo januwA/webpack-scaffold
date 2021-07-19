@@ -1,5 +1,8 @@
 describe("main", () => {
   it("test main", () => {
-    expect(1).toBe(1);
+    function x(a: string) {
+      return a;
+    }
+    expect(x("xxx")).toBe("xxx");
   });
 });
