@@ -1,6 +1,6 @@
 import _ from "lodash";
 
-import "~src/main.styl";
+import "~src/main.sass";
 import Img from "~assets/image.jpg";
 import jsonData from "~assets/data.json";
 

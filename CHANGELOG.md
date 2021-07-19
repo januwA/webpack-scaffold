@@ -1,6 +1,10 @@
+## 0.3.0 [2021-7-19]
+
+- remove stylus 
+
 ## 0.2.0 [2020-11-12]
 
-* webpack update to 5.4.0
+- webpack update to 5.4.0
 
 ## 0.1.0 [date]
 
