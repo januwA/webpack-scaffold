@@ -6,6 +6,7 @@
     "target": "ES6", /* 现代浏览器支持所有 ES6 特性，因此ES6是一个不错的选择。如果您的代码部署到较旧的环境中，您可以选择设置较低的目标，或者如果您的代码保证在较新的环境中运行，则可以选择设置较高的目标。 */
     "module": "ESNext", /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', 'es2020', or 'ESNext'. */
     "lib": [
+      "ES2020",
       "dom",
     ], /* Specify library files to be included in the compilation. */
     "allowJs": false, /* 允许编译javascript文件。 */
