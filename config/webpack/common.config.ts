@@ -7,7 +7,6 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const BundleAnalyzerPlugin =
   require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 import * as JSON5 from "json5";
 import util from "./util";
@@ -79,27 +78,25 @@ const commonConfig: webpack.Configuration = {
                 loader: "babel-loader",
                 options: {
                   presets: ["@babel/env"],
-                  plugins: isDevMode
-                    ? [
-                        [
-                          "import",
-                          {
-                            libraryName: "lodash",
-                            libraryDirectory: "",
-                            camel2DashComponentName: false,
-                          },
-                          "lodash",
-                        ],
-                        [
-                          "import",
-                          {
-                            libraryName: "antd",
-                            libraryDirectory: "lib",
-                          },
-                          "antd",
-                        ],
-                      ]
-                    : [],
+                  plugins: [
+                    [
+                      "import",
+                      {
+                        libraryName: "lodash",
+                        libraryDirectory: "",
+                        camel2DashComponentName: false,
+                      },
+                      "lodash",
+                    ],
+                    [
+                      "import",
+                      {
+                        libraryName: "antd",
+                        libraryDirectory: "lib",
+                      },
+                      "antd",
+                    ],
+                  ],
                 },
               },
               {
@@ -162,9 +159,6 @@ const commonConfig: webpack.Configuration = {
     ],
   },
 
-  // 外部依赖项 需要插入到打包后的html文件中的cdn
-  // https://webpack.js.org/configuration/externals/
-  externals: isDevMode ? {} : jsExternals,
   resolve: {
     // 导入此类文件时，不用添加文件后缀
     extensions: [".tsx", ".ts", ".js"],
@@ -190,10 +184,12 @@ const commonConfig: webpack.Configuration = {
 
     // 生成一个 HTML5 文件
     // https://github.com/jantimon/html-webpack-plugin#options
+    // https://ejs.co/#install
     new HtmlWebpackPlugin({
       inject: false, // 不自动注入，在html中编写脚本设置注入位置
       title: "webpack scaffold",
       template: util.htmlTemplatePath,
+      outputModule: isDevMode,
       js_cnd: isDevMode ? [] : util.externals2Cdn(jsExternals),
       css_cnd: isDevMode ? [] : util.externals2Cdn(cssExternals),
     }),
@@ -217,15 +213,12 @@ const commonConfig: webpack.Configuration = {
 
     // 使用交互式可缩放树图可视化 webpack 输出文件的大小
     // new BundleAnalyzerPlugin(),
-
-    // output.clean 不怎么好用
-    new CleanWebpackPlugin(),
   ],
 
   // 实验性支持: https://webpack.js.org/configuration/experiments/
   experiments: {
     topLevelAwait: true,
-    outputModule: true,
+    outputModule: isDevMode,
   },
 
   // 打包时显示哪些信息

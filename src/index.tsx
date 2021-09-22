@@ -1,48 +1,26 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Typography } from "antd";
-import { RxService } from "react-rxbuilder";
 
-import "./index.sass";
 import { Routing, Routes } from "react-routerpp";
-import { AboutPage, Child } from "@pages/about";
-import { HomePage } from "@pages/home";
-import { TestPage } from "@pages/test";
 import { BrowserRouter } from "react-router-dom";
+
+const App = () => {
+  return <h2>hello</h2>;
+};
 
 const routes: Routes = [
   {
     exact: true,
     path: "",
-    component: HomePage,
-  },
-  {
-    path: "test",
-    component: TestPage,
-  },
-  {
-    path: "about",
-    children: [
-      {
-        exact: true,
-        path: "",
-        component: AboutPage,
-      },
-      {
-        path: ":name",
-        component: Child,
-      },
-    ],
+    component: App,
   },
 ];
 
 ReactDOM.render(
   <React.StrictMode>
-    <Typography>
-      <BrowserRouter>
-        <RxService>{() => <Routing routes={routes}></Routing>}</RxService>
-      </BrowserRouter>
-    </Typography>
+    <BrowserRouter>
+      <Routing routes={routes}></Routing>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")
 );
