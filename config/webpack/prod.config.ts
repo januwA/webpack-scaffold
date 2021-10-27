@@ -9,7 +9,6 @@ const prodConfig: webpack.Configuration = merge(commonConfig, {
   // target: 'node', // 如果你只想打包在nodejs环境中运行的代码，就开启这个
   mode: "production",
 
-
   // 外部依赖项 需要插入到打包后的html文件中的cdn
   // https://webpack.js.org/configuration/externals/
   externals: jsExternals,

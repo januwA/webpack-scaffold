@@ -79,7 +79,7 @@ class Util {
    * ```
    */
   get alias() {
-    const { paths, baseUrl } = this.tsconfig.compilerOptions;
+    const { paths = {}, baseUrl = './' } = this.tsconfig.compilerOptions;
     const alias = {};
     if (paths) {
       const rootPath = this.rootPath;
