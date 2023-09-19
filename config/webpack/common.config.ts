@@ -170,6 +170,7 @@ const commonConfig: webpack.Configuration = {
     fallback: {
       // 假如你编写的包，相同时打包在浏览器和node的环境下运行，你的源码中包含了node的fs模块，但是在浏览器不存在fs模块，这时候你需要配置这个选项
       // fs: false,
+      path: "path-browserify",
     },
   },
 
